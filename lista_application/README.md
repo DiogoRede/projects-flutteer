@@ -1,16 +1,8 @@
-# lista_application
+# Projeto de Agenda
 
-A new Flutter project.
+Usando Flutter para fazer uma agenda funcional.
 
-## Getting Started
+## A resolver: 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Tamanho da lista bugando (quando está com o teclado aberto {android})
+- Adicionar um item a lista (não está trazendo todos os dados)
