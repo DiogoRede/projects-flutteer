@@ -15,12 +15,14 @@ class TodoListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Slidable(
-        startActionPane: ActionPane(
+        endActionPane: ActionPane(
           extentRatio: 0.25,
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
-              onPressed: onDelete(todo),
+              onPressed: (context) {
+                onDelete(todo);
+              },
               backgroundColor: Colors.red,
               icon: Icons.delete,
               label: 'Deletar',
