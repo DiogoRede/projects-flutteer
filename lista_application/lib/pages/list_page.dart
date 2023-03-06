@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lista_application/models/Todo.dart';
+import 'package:lista_application/repositories/todo_repository.dart';
 import 'package:lista_application/widgets/todo_list_item.dart';
 
 class ListPage extends StatefulWidget {
@@ -16,6 +17,20 @@ class _ListPageState extends State<ListPage> {
   int? deletedTodoIndex;
 
   final TextEditingController todoController = TextEditingController();
+  final TodoRepository todoRepository = TodoRepository();
+
+  String? errorText;
+
+  @override
+  void initState() {
+    super.initState();
+
+    todoRepository.getTodoList().then((value) {
+      setState(() {
+        todos = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +54,10 @@ class _ListPageState extends State<ListPage> {
                   Expanded(
                       child: TextField(
                     controller: todoController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Adicione uma tarefa',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
+                      errorText: errorText,
                     ),
                   )),
                   const SizedBox(
@@ -49,13 +65,23 @@ class _ListPageState extends State<ListPage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
+                        String text = todoController.text;
+
+                        if (text.isEmpty) {
+                          errorText = 'Campo deve ser preenchido';
+                          return;
+                        }
+
                         setState(() {
                           Todo newTodo = Todo(
-                              title: todoController.text,
-                              dateTime: DateTime.now());
+                            title: text,
+                            dateTime: DateTime.now(),
+                          );
                           todos.add(newTodo);
+                          errorText = null;
                         });
                         todoController.clear();
+                        todoRepository.saveTodoList(todos);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.purple,
@@ -115,6 +141,8 @@ class _ListPageState extends State<ListPage> {
       todos.remove(todo);
     });
 
+    todoRepository.saveTodoList(todos);
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -134,6 +162,7 @@ class _ListPageState extends State<ListPage> {
               setState(() {
                 todos.insert(deletedTodoIndex!, deletedTodo!);
               });
+              todoRepository.saveTodoList(todos);
             },
           )),
     );
@@ -173,5 +202,6 @@ class _ListPageState extends State<ListPage> {
     setState(() {
       todos.clear();
     });
+    todoRepository.saveTodoList(todos);
   }
 }
