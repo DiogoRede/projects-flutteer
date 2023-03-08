@@ -68,7 +68,9 @@ class _ListPageState extends State<ListPage> {
                         String text = todoController.text;
 
                         if (text.isEmpty) {
-                          errorText = 'Campo deve ser preenchido';
+                          setState(() {
+                            errorText = 'Campo deve ser preenchido';
+                          });
                           return;
                         }
 
