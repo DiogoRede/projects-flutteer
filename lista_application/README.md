@@ -2,6 +2,7 @@
 
 Usando Flutter para fazer uma agenda funcional.
 
-## A resolver: 
+## Objetivo/O que foi feito
 
-- Resolver o problema quando é chamado a função onDelete no onpressed do icon de Delete (listItem)
+- Aprender sobre lista e mais widgets.
+- Observar dados persistentes.
