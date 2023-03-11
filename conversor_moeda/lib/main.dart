@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -43,16 +44,40 @@ class _HomeState extends State<Home> {
   final euroController = TextEditingController();
   final dolarController = TextEditingController();
 
+  void _clearAll() {
+    dolarController.text = '';
+    euroController.text = '';
+    realController.text = '';
+  }
+
   void _realChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+    double real = double.parse(text);
+    dolarController.text = (real / dolar).toStringAsFixed(2);
+    euroController.text = (real / euro).toStringAsFixed(2);
   }
 
   void _euroChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro / dolar).toStringAsFixed(2);
   }
 
   void _dolarChanged(String text) {
-    print(text);
+    if (text.isEmpty) {
+      _clearAll();
+      return;
+    }
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar).toStringAsFixed(2);
+    euroController.text = (dolar * this.dolar / euro).toStringAsFixed(2);
   }
 
   @override
@@ -124,6 +149,10 @@ Widget buildTextField(
     String label, String prefix, TextEditingController c, Function func) {
   return TextField(
     controller: c,
+    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+    inputFormatters: [
+      FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+    ],
     decoration: InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Colors.yellow),
@@ -133,7 +162,6 @@ Widget buildTextField(
       func(text);
     },
     style: const TextStyle(color: Colors.yellow),
-    keyboardType: TextInputType.number,
   );
 }
 
